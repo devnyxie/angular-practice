@@ -4,17 +4,21 @@ import { ActivatedRoute } from '@angular/router';
 import { HousingService } from '../housing.service';
 import { HousingLocation } from '../housinglocation';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-details',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   template: `
-    <article>
-      <img
-        class="listing-photo"
-        [src]="housingLocation?.photo"
-        alt="Exterior photo of {{ housingLocation?.name }}"
-      />
+    <article style="position: relative;">
+      <div>
+        <img
+          class="listing-photo"
+          [src]="housingLocation?.photo"
+          alt="Exterior photo of {{ housingLocation?.name }}"
+          (click)="addOverlay(housingLocation?.photo, $event)"
+        />
+      </div>
       <section class="listing-description">
         <h2 class="listing-heading">{{ housingLocation?.name }}</h2>
         <p class="listing-location">
@@ -45,11 +49,51 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
           <button type="submit" class="primary">Apply now</button>
         </form>
       </section>
+      <div *ngIf="showOverlay" class="overlay" (click)="closeOverlay()">
+        <!-- Overlay content -->
+        <div class="overlay-content">
+          <img
+            *ngFor="let photo of overlayImgUrls"
+            [src]="photo"
+            alt="Exterior photo of {{ housingLocation?.name }}"
+            class="overlay-photo"
+          />
+        </div>
+      </div>
     </article>
   `,
   styleUrl: './details.component.css',
 })
 export class DetailsComponent {
+  //
+  showOverlay: boolean = false;
+  overlayImgUrls: string[] = [];
+  overlayImgUrl: string = '';
+
+  //func to add div to article with custom template. dont use dom manipulation
+  addOverlay(url: string | undefined, event: Event) {
+    const targetElement = event.target as HTMLElement;
+    const parentElement = targetElement.parentElement;
+    const childrenCount = parentElement?.children.length || 0;
+    if (childrenCount > 0) {
+      for (let i = 0; i < childrenCount; i++) {
+        const childElement = parentElement?.children[i];
+        if (childElement) {
+          const url = childElement.getAttribute('src');
+          if (url) {
+            this.overlayImgUrls.push(url);
+          }
+        }
+      }
+    }
+    this.showOverlay = true;
+  }
+  //
+  closeOverlay() {
+    this.showOverlay = false;
+    this.overlayImgUrls = [];
+  }
+  //
   route: ActivatedRoute = inject(ActivatedRoute);
   housingService = inject(HousingService);
   housingLocation: HousingLocation | undefined;
