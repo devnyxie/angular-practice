@@ -1,18 +1,10 @@
-import { Routes } from '@angular/router';
-import { RouteGeneratorService } from './route-generator.service';
 
-const routeGeneratorService = new RouteGeneratorService();
+  import { Routes } from '@angular/router';
+  import { Home } from './pages/Home.component';
+import { About } from './pages/About.component';
 
-const routesConfig = [
-  {
-    path: '',
-    component: 'Component1',
-  },
-  {
-    path: 'rrr',
-    component: 'Component2',
-  },
-];
-
-export const routes: Routes =
-  routeGeneratorService.generateRoutes(routesConfig);
+  export const routes: Routes = [
+    { path: '', component: Home },
+{ path: 'about', component: About },
+  ];
+  

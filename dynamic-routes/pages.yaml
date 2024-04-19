@@ -1,0 +1,10 @@
+pages:
+  - name: Home
+    path:
+    components:
+      - Component1
+      - Component2
+  - name: About
+    path: about
+    components:
+      - Component2
