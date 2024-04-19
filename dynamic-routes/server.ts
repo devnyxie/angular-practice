@@ -4,7 +4,6 @@ import express from 'express';
 import { fileURLToPath } from 'node:url';
 import path, { dirname, join, resolve } from 'node:path';
 import bootstrap from './src/main.server';
-import fs from 'fs';
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
@@ -49,23 +48,6 @@ export function app(): express.Express {
 
 function run(): void {
   const port = 4000;
-
-  //
-  const serverDistFolder = dirname(fileURLToPath(import.meta.url));
-  const rootFolder = resolve(serverDistFolder, '../../../');
-  const fileName = 'example.txt';
-  const fileContent = 'Hello, world!';
-
-  fs.writeFile(path.join(rootFolder, fileName), fileContent, (err) => {
-    if (err) {
-      console.error('Error creating file:', err);
-
-      return;
-    }
-    console.log('File created at:', path.join(rootFolder, fileName));
-  });
-  //
-
   // Start up the Node server
   const server = app();
   server.listen(port, () => {

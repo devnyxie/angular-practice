@@ -3,14 +3,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "prebuild": "node generateFile.js",
-    "prestart": "node generateFile.js",
+    "prebuild": "node configurePages.js",
+    "predev": "node configurePages.js",
     "ng": "ng",
-    "start": "ng serve",
+    "dev": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:dynamic-routes": "node dist/dynamic-routes/server/server.mjs"
+    "start": "node dist/dynamic-routes/server/server.mjs"
   },
   "private": true,
   "dependencies": {
@@ -31,6 +31,7 @@
     "zone.js": "~0.14.3"
   },
   "devDependencies": {
+    "@angular-builders/custom-webpack": "^17.0.2",
     "@angular-devkit/build-angular": "^17.3.4",
     "@angular/cli": "^17.3.4",
     "@angular/compiler-cli": "^17.3.0",

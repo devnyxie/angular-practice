@@ -8,20 +8,21 @@ function capitalizeFirstChar(str) {
 // pages.yaml config parsing
 const pagesConfig = parse(fs.readFileSync("./pages.yaml", "utf8"));
 
-//Create empty pages directory
-const pagesDirPath = "./src/app/pages";
-if (fs.existsSync(pagesDirPath)) {
-  fs.rmSync(pagesDirPath, { recursive: true });
-}
-fs.mkdirSync(pagesDirPath, { recursive: true });
+try {
+  //Create empty pages directory
+  const pagesDirPath = "./src/app/pages";
+  if (fs.existsSync(pagesDirPath)) {
+    fs.rmSync(pagesDirPath, { recursive: true });
+  }
+  fs.mkdirSync(pagesDirPath, { recursive: true });
 
-//Generate Pages
-console.log("[PreBuild/PreStart]: Crafting Pages...");
-for (const page of pagesConfig.pages) {
-  // Create a file for each page
-  fs.writeFileSync(
-    `./src/app/pages/${page.name}.component.ts`,
-    `
+  //Generate Pages
+  console.log("[PreBuild/PreStart]: Crafting Pages...");
+  for (const page of pagesConfig.pages) {
+    // Create a file for each page
+    fs.writeFileSync(
+      `./src/app/pages/${page.name}.component.ts`,
+      `
     import { Component } from '@angular/core';
    
     ${page.components
@@ -46,14 +47,14 @@ for (const page of pagesConfig.pages) {
     })
     export class ${page.name} {}
     `
-  );
-}
+    );
+  }
 
-//Generate app.router.ts
-console.log("[PreBuild/PreStart]: Spawning Router...");
-fs.writeFileSync(
-  `./src/app/app.routes.ts`,
-  `
+  //Generate app.router.ts
+  console.log("[PreBuild/PreStart]: Spawning Router...");
+  fs.writeFileSync(
+    `./src/app/app.routes.ts`,
+    `
   import { Routes } from '@angular/router';
   ${pagesConfig.pages
     .map((page) => {
@@ -69,12 +70,13 @@ fs.writeFileSync(
       .join("\n")}
   ];
   `
-);
-
-// Your file content
-const fileContent = "This is the content of the file.";
-
-// Write content to file
-fs.writeFileSync("file.txt", fileContent);
-
-console.log("File created successfully.");
+  );
+} catch (error) {
+  //break app
+  console.error(`Error executing [pre-serve/pre-build] script: ${error}`);
+  process.exit(1);
+} finally {
+  //start angular app
+  console.log("[pre-serve/pre-build] script executed successfully");
+  process.exit(0);
+}
