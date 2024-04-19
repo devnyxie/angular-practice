@@ -43,3 +43,4 @@ Thumbs.db
 
 # Pages
 /src/app/pages
+/src/app/app.routes.ts

@@ -8,6 +8,13 @@ function capitalizeFirstChar(str) {
 // pages.yaml config parsing
 const pagesConfig = parse(fs.readFileSync("./pages.yaml", "utf8"));
 
+//Create empty pages directory
+const pagesDirPath = "./src/app/pages";
+if (fs.existsSync(pagesDirPath)) {
+  fs.rmSync(pagesDirPath, { recursive: true });
+}
+fs.mkdirSync(pagesDirPath, { recursive: true });
+
 //Generate Pages
 console.log("[PreBuild/PreStart]: Crafting Pages...");
 for (const page of pagesConfig.pages) {
