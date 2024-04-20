@@ -5,6 +5,10 @@ function capitalizeFirstChar(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+function log(...args) {
+  console.log(`[configure-pages-process]`, ...args);
+}
+
 // pages.yaml config parsing
 const pagesConfig = parse(fs.readFileSync("./pages.yaml", "utf8"));
 
@@ -17,7 +21,7 @@ try {
   fs.mkdirSync(pagesDirPath, { recursive: true });
 
   //Generate Pages
-  console.log("[PreBuild/PreStart]: Crafting Pages...");
+  log("Crafting Pages...");
   for (const page of pagesConfig.pages) {
     // Create a file for each page
     fs.writeFileSync(
@@ -51,7 +55,7 @@ try {
   }
 
   //Generate app.router.ts
-  console.log("[PreBuild/PreStart]: Spawning Router...");
+  log("Spawning Router...");
   fs.writeFileSync(
     `./src/app/app.routes.ts`,
     `
@@ -73,10 +77,10 @@ try {
   );
 } catch (error) {
   //break app
-  console.error(`Error executing [pre-serve/pre-build] script: ${error}`);
+  console.error(`Error executing script: ${error}`);
   process.exit(1);
 } finally {
   //start angular app
-  console.log("[pre-serve/pre-build] script executed successfully");
+  log("Executed successfully");
   process.exit(0);
 }

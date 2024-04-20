@@ -8,3 +8,4 @@ pages:
     path: about
     components:
       - component2
+      - component1
