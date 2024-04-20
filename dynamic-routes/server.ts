@@ -27,6 +27,9 @@ export function app(): express.Express {
     })
   );
 
+  server.get('/api', (req, res) => {
+    res.send({ message: 'Hello from Express!' });
+  });
   // All regular routes use the Angular engine
   server.get('*', (req, res, next) => {
     const { protocol, originalUrl, baseUrl, headers } = req;
@@ -47,7 +50,8 @@ export function app(): express.Express {
 }
 
 function run(): void {
-  const port = 4000;
+  // lets get  port from env
+  const port = process.env['PORT'] || 4200;
   // Start up the Node server
   const server = app();
   server.listen(port, () => {
