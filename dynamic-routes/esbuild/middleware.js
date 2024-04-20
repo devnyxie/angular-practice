@@ -13,11 +13,12 @@ const startPagesConf = () => {
   });
 };
 
+// on browser request
 const appConfigurator = ({ req, res, next, initial = false }) => {
   // in order to escape multiple executions of the script, we will require a vite referer.
   if (req?.headers?.referer) {
     if (req.headers.referer.includes("@vite")) {
-      console.log("Vite referer detected, configuring pages...");
+      console.log("Browser Refresh detected. Looking for changes...");
       startPagesConf();
     }
   } else {
@@ -28,9 +29,6 @@ const appConfigurator = ({ req, res, next, initial = false }) => {
   }
   next();
 };
-
-//init
-startPagesConf();
 
 export default (req, res, next) => {
   appConfigurator({ req, res, next });

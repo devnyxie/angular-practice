@@ -13,6 +13,7 @@
         "build": {
           "builder": "@angular-builders/custom-esbuild:application",
           "options": {
+            "plugins": ["./esbuild/plugins.js"],
             "server": "src/main.server.ts",
             "prerender": true,
             "ssr": {
@@ -60,7 +61,7 @@
           "builder": "@angular-builders/custom-esbuild:dev-server",
           "options": {
             "buildTarget": "dynamic-routes:build",
-            "middlewares": ["myMiddleware.js"]
+            "middlewares": ["./esbuild/middleware.js"]
           },
           "configurations": {
             "production": {

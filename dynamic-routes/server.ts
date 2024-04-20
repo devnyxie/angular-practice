@@ -46,6 +46,10 @@ export function app(): express.Express {
       .catch((err) => next(err));
   });
 
+  server.get('/api', (req, res) => {
+    res.send({ message: 'Hello from Express!' });
+  });
+
   return server;
 }
 
